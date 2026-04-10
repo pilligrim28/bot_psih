@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Твой внутренний возраст</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-hero">
+                <div class="welcome-photo">
+                    <img src="images/welcome.jpg" alt="Светлана Кустовская">
+                </div>
+                <div class="welcome-badge">Женский коуч и телесный терапевт</div>
+                <h1 class="welcome-title">Светлана Кустовская</h1>
+            </div>
+            
+            <div class="welcome-content">
+                <div class="welcome-section">
+                    <h2 class="section-title">Этот тест для тебя, если ты узнаёшь хотя бы одну из этих болей:</h2>
+                    <ul class="pain-list">
+                        <li>не понимаешь, чего хочешь и куда идёшь;</li>
+                        <li>сложно строить отношения (или их нет);</li>
+                        <li>постоянно сомневаешься в себе, низкая самооценка;</li>
+                        <li>устала быть удобной, не живёшь своей жизнью;</li>
+                        <li>с деньгами не выходит: стыдно брать, не растёшь.</li>
+                    </ul>
+                </div>
+
+                <div class="welcome-section highlight">
+                    <h2 class="section-title">За 2 минуты ты получишь конкретный план из 4 шагов, благодаря которым:</h2>
+                    <ul class="benefits-list">
+                        <li>перестанешь заслуживать любовь и начнёшь выбирать себя;</li>
+                        <li>создашь мотивацию и энергичное состояние;</li>
+                        <li>научишься выстраивать границы и говорить «нет»;</li>
+                        <li>выйдешь из абьюзивных сценариев в отношениях;</li>
+                        <li>обретёшь уверенность.</li>
+                    </ul>
+                </div>
+
+                <div class="welcome-section">
+                    <p class="welcome-note">В конце — твой личный план из 4 шагов, с чего начать.</p>
+                    <p class="welcome-note">👇 Отвечай честно. Это просто тест, который покажет, где ты сейчас.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-start" id="btnStart">
+                Начать тест
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Test Screen (hidden initially) -->
+        <div class="test-screen" id="testScreen" style="display: none;">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <div class="avatar">
+                        <div class="avatar-circle">✨</div>
+                    </div>
+                    <h1 class="title">Твой внутренний возраст</h1>
+                    <p class="subtitle">Узнай, сколько лет твоей внутренней себе</p>
+                </div>
+                <div class="header-bg"></div>
+            </header>
+
+            <!-- Progress Bar -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-info">
+                    <span class="progress-text">Вопрос <span id="currentQuestion">1</span> из 5</span>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Questions -->
+            <main class="main">
+                <div class="question-card" id="questionCard">
+                    <!-- Content will be dynamically inserted -->
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation" id="navigation">
+                    <button class="btn btn-prev" id="btnPrev" disabled>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                    <button class="btn btn-next" id="btnNext" disabled>
+                        Далее
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Result -->
+                <div class="result-card" id="resultCard" style="display: none;">
+                    <div class="result-icon" id="resultIcon">🎯</div>
+                    <h2 class="result-title">Твой результат:</h2>
+                    <div class="result-content" id="resultContent"></div>
+                    
+                    <div class="cta-section">
+                        <h3 class="cta-title">Хочешь узнать, как это исправить?</h3>
+                        <p class="cta-text">Запишись на консультацию, чтобы начать трансформацию</p>
+                        <a href="https://t.me/SKustovskayacoach" class="btn btn-cta" id="ctaButton" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M3 4L17 10L3 16V4Z" fill="currentColor"/>
+                            </svg>
+                            Записаться на консультацию
+                        </a>
+                    </div>
+
+                    <button class="btn btn-restart" id="btnRestart">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 17a7 7 0 007-7h-2a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5v2l3-3-3-3v2a7 7 0 00-7 7 7 7 0 007 7z" fill="currentColor"/>
+                        </svg>
+                        Пройти тест заново
+                    </button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="social-links">
+                <a href="https://t.me/SKustovskayacoach" class="social-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" fill="currentColor"/>
+                    </svg>
+                    Telegram
+                </a>
+                
+            </div>
+            <p class="copyright">© 2024 Психолог-консультант</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
