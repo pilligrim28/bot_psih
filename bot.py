@@ -9,7 +9,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import BOT_TOKEN
-from questions import QUESTIONS, calculate_result
+from questions import QUESTIONS, calculate_result, ANSWER_KEYS
 
 # Быстрое хранилище в памяти (FSM)
 storage = MemoryStorage()
@@ -68,11 +68,16 @@ async def send_question(message: Message, index: int, user_id: int):
         # Тест окончен
         answers_list = user_answers.get(user_id, [])
         result_text = calculate_result(answers_list)
+        keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[
+                InlineKeyboardButton(text="Записаться на консультацию", url="https://t.me/SKustovskayacoach")
+            ]]
+        )
         final_msg = (
             f"✨ Твой результат ✨\n\n{result_text}\n\n"
-            "Если хочешь глубже разобрать свой запрос — напиши мне @svetlana_kustovskaya (ссылка для примера)"
+            "Если хочешь глубже разобрать свой запрос — напиши мне:"
         )
-        await message.answer(final_msg)
+        await message.answer(final_msg, reply_markup=keyboard)
         # Чистим данные пользователя
         if user_id in user_answers:
             del user_answers[user_id]
@@ -80,15 +85,20 @@ async def send_question(message: Message, index: int, user_id: int):
     
     q = QUESTIONS[index]
     text = q["text"]
+
+    # Формируем текст с вариантами ответов (убираем эмодзи из начала для кнопок)
+    options_text = "\n\n".join([f"<b>{key}:</b> {q[key]}" for key in ANSWER_KEYS if key in q])
+    full_text = f"❓ <b>{text}</b>\n\n{options_text}"
+
     # Все варианты в одну строку
     kb = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text=key, callback_data=f"ans_{key}")
-        for key in q["options"].keys()
+        for key in ANSWER_KEYS
     ]])
 
     # Отправляем вопрос + фото (q1.jpg, q2.jpg и т.д. для каждого вопроса)
     photo = FSInputFile(f"images/q{index + 1}.jpg")
-    await message.answer_photo(photo=photo, caption=text, reply_markup=kb)
+    await message.answer_photo(photo=photo, caption=full_text, parse_mode="HTML", reply_markup=kb)
 
 @dp.callback_query(TestState.answering, F.data.startswith("ans_"))
 async def handle_answer(callback: CallbackQuery, state: FSMContext):
@@ -106,13 +116,12 @@ async def handle_answer(callback: CallbackQuery, state: FSMContext):
     next_index = current_index + 1
 
     # Формируем клавиатуру с галочкой на выбранном и деактивируем все кнопки
-    q = QUESTIONS[current_index] if current_index < len(QUESTIONS) else QUESTIONS[-1]
     kb = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(
             text=f"{'✅ ' if key == answer_letter else ''}{key}",
             callback_data=f"done_{key}"  # другой префикс — не сработает фильтр ans_
         )
-        for key in q["options"].keys()
+        for key in ANSWER_KEYS
     ]])
     await callback.message.edit_reply_markup(reply_markup=kb)
 
